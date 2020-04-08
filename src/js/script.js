@@ -77,41 +77,39 @@
       menuContainer.appendChild(thisProduct.element);
     }
 
+
+
     initAccordion(){
-      /* find the clickable trigger (the element that should react to clicking) */
       const thisProduct = this;
-      const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable); 
+
+      /* find the clickable trigger (the element that should react to clicking) */
+      const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable); // Elementy do klikania
       console.log('clickableTrigger: ', clickableTrigger);
 
-      /* START: click event listener to trigger */
-      function triggerClickHandler(){
+      /* START: add click event listener to trigger */
+      clickableTrigger.addEventListener('click', function(){ 
+
         /* prevent default action for event */
-        event.preventDefault();
+        event.preventDefault(); 
 
         /* toggle active class on element of thisProduct */
-        clickableTrigger.classList.add('active'); 
+        thisProduct.element.classList.toggle('active'); // Nadawanie i odbieranie klasy "active" klikniętemu elementowi
 
         /* find all active products */
-        const activeProducts = thisProduct.element.querySelectorAll('.active'); 
-        console.log('activeProducts: ', activeProducts); 
+        const activeProducts = thisProduct.element.querySelectorAll('active'); // Szukanie wszystkich aktywnych elementów
+        console.log(activeProducts);
 
         /* START LOOP: for each active product */
-        for (let activeProduct of activeProducts){
+        for (let activeProduct of activeProducts) { // Pętla iterująca po wszystkich aktywnych produktach
 
           /* START: if the active product isn't the element of thisProduct */
-          if(activeProduct != thisProduct){
+          if (activeProduct != thisProduct.element) { // Warunek - jeżeli aktywny produkt nie jest elementem kliknietego produktu to \/
             /* remove class active for the active product */
-            //activeProduct.classList.remove('active');
-          /* END: if the active product isn't the element of thisProduct */
+            
+            activeProduct.classList.remove('active'); // Usuń klase "active" z aktywnego produktu [NIEZROBIONE]
+            /* END: if the active product isn't the element of thisProduct */
           }
-        /* END LOOP: for each active product */
         }
-        /* END: click event listener to trigger */
-      }
-      const clickableProduct = thisProduct.element.querySelector(select.menuProduct.clickable);
-      clickableProduct.addEventListener('click', function(){
-        console.log('Clicked');
-        triggerClickHandler(event);
       });
     }
   }
