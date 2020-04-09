@@ -93,7 +93,7 @@
         event.preventDefault(); 
 
         /* toggle active class on element of thisProduct */
-        thisProduct.element.classList.toggle('active'); // Nadawanie i odbieranie klasy "active" klikniętemu elementowi
+        thisProduct.element.classList.toggle(classNames.menuProduct.wrapperActive); // Nadawanie i odbieranie klasy "active" klikniętemu elementowi
 
         /* find all active products */
         const activeProducts = document.querySelectorAll(select.all.menuProductsActive); // Szukanie wszystkich aktywnych elementów
@@ -105,7 +105,7 @@
           if (activeProduct != thisProduct.element) { // Warunek - jeżeli aktywny produkt nie jest elementem kliknietego produktu to \/
 
             /* remove class active for the active product */
-            activeProduct.classList.remove('active'); // Usuń klase "active" z aktywnego produktu [NIEZROBIONE]
+            activeProduct.classList.remove(classNames.menuProduct.wrapperActive); // Usuń klase "active" z aktywnego produktu [NIEZROBIONE]
 
             /* END: if the active product isn't the element of thisProduct */
           }
