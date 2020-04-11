@@ -57,14 +57,14 @@
       const thisProduct = this;
       thisProduct.id = id;
       thisProduct.data = data;
-      thisProduct.renderInMenu();
+      thisProduct.renderInMenu(); // wywołanie metody
       thisProduct.getElements();
       thisProduct.initAccordion();
       thisProduct.processOrder();
       thisProduct.initOrderForm();
       console.log('New Product: ', thisProduct);
     }
-    renderInMenu(){
+    renderInMenu(){ // deklaracja metody
       const thisProduct = this;
 
       /* generate HTML based on template */
@@ -88,10 +88,9 @@
       thisProduct.formInputs = thisProduct.form.querySelectorAll(select.all.formInputs);
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
+      thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
       console.log('Szukane produkty:',  thisProduct);
     }
-
-
 
     initAccordion(){
       const thisProduct = this;
@@ -165,8 +164,8 @@
       /* START LOOP: for each paramId in thisProduct.data.params */
       for (let paramId in params){ // Pętla - szukamy paramId we wszystkich params (thisProduct.data.params)
         console.log('ParamID: ', paramId);
-        /* save the element in thisProduct.data.params with key paramId as const param */
 
+        /* save the element in thisProduct.data.params with key paramId as const param */
         const param = params[paramId]; // Przypisanie wartości params[paramId] do zmiennej param
         console.log('Param: ', param);
     
@@ -196,7 +195,20 @@
 
           /* END ELSE IF: if option is not selected and option is default */
           }
-        /* END LOOP: for each optionId in param.options */
+          /* END LOOP: for each optionId in param.options */
+
+          /* find active images of selected options */ 
+          const activeImages = thisProduct.imageWrapper.querySelectorAll('.' + paramId + '-' + optionId); //np .ingredients-olives jak wybierzemy checkboxa Olives w NONNA ALBA'S PIZZA
+
+          if (optionSelected) {
+            for (let activeImage of activeImages) 
+              activeImage.classList.add(classNames.menuProduct.imageVisible); // Nadajemy klase "active" obrazkowi wybranego składnika = staje się widoczny
+          } 
+          else {
+            for (let activeImage of activeImages) 
+              activeImage.classList.remove(classNames.menuProduct.imageVisible); // Usuwamy klase "active" obrazkowi składnika, który nie jest wybrany
+              // lub usuwamy klase "active" obrazkowi składnika, którego odznaczymy (czyli nie jest wybrany).                                                        
+          }
         }
       /* END LOOP: for each paramId in thisProduct.data.params */
       }
