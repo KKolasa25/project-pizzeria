@@ -40,6 +40,7 @@
     },
   };
 
+  // eslint-disable-next-line no-unused-vars
   const settings = {
     amountWidget: {
       defaultValue: 1,
@@ -60,6 +61,7 @@
       thisProduct.renderInMenu(); // wywołanie metody
       thisProduct.getElements();
       thisProduct.initAccordion();
+      thisProduct.initAmountWidget();
       thisProduct.processOrder();
       thisProduct.initOrderForm();
       console.log('New Product: ', thisProduct);
@@ -89,15 +91,17 @@
       thisProduct.cartButton = thisProduct.element.querySelector(select.menuProduct.cartButton);
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
       thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
-      console.log('Szukane produkty:',  thisProduct);
+      thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
+      //console.log('Szukane produkty:',  thisProduct);
     }
 
     initAccordion(){
       const thisProduct = this;
 
       /* find the clickable trigger (the element that should react to clicking) */
+      // eslint-disable-next-line no-unused-vars
       const clickableTrigger = thisProduct.element.querySelector(select.menuProduct.clickable); // Elementy do klikania
-      console.log('clickableTrigger: ', clickableTrigger);
+      //console.log('clickableTrigger: ', clickableTrigger);
 
       /* START: add click event listener to trigger */
       thisProduct.accordionTrigger.addEventListener('click', function(){ 
@@ -148,33 +152,33 @@
     }
     processOrder(){
       const thisProduct = this;
-      console.log(thisProduct);
+      //console.log(thisProduct);
     
       /* read all data from the form (using utils.serializeFormToObject) and save it to const formData */
       const formData = utils.serializeFormToObject(thisProduct.form); // Pobranie danych z formularza i przypisanie do formData
-      console.log('formData ', formData);
+      //console.log('formData ', formData);
     
       /* set variable price to equal thisProduct.data.price */
       let price = thisProduct.data.price; // Przypisanie wartości thisProduct.data.price do zmiennej price
-      console.log('Price: ', price);
+      //console.log('Price: ', price);
 
       const params = thisProduct.data.params; // Przypisanie wartości thisProduct.data.params do zmiennej params
-      console.log('Params: ', params);
+      //console.log('Params: ', params);
     
       /* START LOOP: for each paramId in thisProduct.data.params */
       for (let paramId in params){ // Pętla - szukamy paramId we wszystkich params (thisProduct.data.params)
-        console.log('ParamID: ', paramId);
+        //console.log('ParamID: ', paramId);
 
         /* save the element in thisProduct.data.params with key paramId as const param */
         const param = params[paramId]; // Przypisanie wartości params[paramId] do zmiennej param
-        console.log('Param: ', param);
+        //console.log('Param: ', param);
     
         /* START LOOP: for each optionId in param.options */
         for (let optionId in param.options){ // Pętla - szukamy optionId we wszystkich param.options
 
           /* save the element in param.options with key optionId as const option */
           const option = param.options[optionId]; // Przypisanie wartości param.options[optionId] do zmiennej option
-          console.log('OptionID is: ', option);
+          //console.log('OptionID is: ', option);
 
           const optionSelected = formData.hasOwnProperty(paramId) && formData[paramId].indexOf(optionId) > -1; // Czy "-1" odnosi się do tablicy?
           // W stałej optionSelected sprawdzamy czy istnieje formData[paramId], a jeśli tak, to czy ta tablica zawiera klucz równy wartości optionId
@@ -215,6 +219,21 @@
       /* set the contents of thisProduct.priceElem to be the value of variable price */
 
       thisProduct.priceElem.innerHTML = price; // Umieszczenie price w HTML, aby zmieniała się na stronie
+    }
+
+    initAmountWidget(){
+      const thisProduct = this;
+
+      thisProduct.amountWidget = new AmountWidget(thisProduct.amountWidgetElem);
+    }
+  }
+
+  class AmountWidget{
+    constructor(element){
+      const thisWidget = this;
+
+      console.log('AmountWidget: ', thisWidget);
+      console.log('Constructor arguments: ', element);
     }
   }
 
