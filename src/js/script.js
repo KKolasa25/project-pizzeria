@@ -283,7 +283,7 @@
         thisWidget.setValue(thisWidget.value - 1);
       });
 
-      thisWidget.linkDecrease.addEventListener('click', function(event){
+      thisWidget.linkIncrease.addEventListener('click', function(event){
         event.preventDefault();
         thisWidget.setValue(thisWidget.value + 1);
       });
