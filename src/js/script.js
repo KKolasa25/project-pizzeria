@@ -286,8 +286,8 @@
     addToCart(){
       const thisProduct = this;
 
-      thisProduct.data.name = thisProduct.name;
-      thisProduct.amountWidget.value = thisProduct.amount;
+      thisProduct.name = thisProduct.data.name; 
+      thisProduct.amount = thisProduct.amountWidget.value;
 
       app.cart.add(thisProduct);
     }
@@ -394,16 +394,14 @@
       console.log('Adding product', menuProduct);
 
       /* generate HTML based on template */
-      //const generatedHTML = templates.menuProduct(thisProduct.data);
-      const generatedHTML = templates.cartProduct(menuProduct);
+      const generatedHTML = templates.cartProduct(menuProduct); 
       console.log(generatedHTML);
 
       /* create element using utils.createDOMFromHTML */
-      //thisProduct.element = utils.createDOMFromHTML(generatedHTML);
       const generatedDOM = utils.createDOMFromHTML(generatedHTML);
 
-      /* find menu container */ 
-      const cartContainer = thisCart.dom.productList;
+      /* find cart container */ 
+      const cartContainer = thisCart.dom.productList; 
 
       /* add element to cart */
       cartContainer.appendChild(generatedDOM);
