@@ -126,6 +126,7 @@
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
       thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
       thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
+
       
       //console.log('Szukane produkty:',  thisProduct);
     }
@@ -183,6 +184,7 @@
       thisProduct.cartButton.addEventListener('click', function(event){
         event.preventDefault();
         thisProduct.processOrder();
+        thisProduct.addToCart();
       });
     }
     processOrder(){
@@ -193,6 +195,8 @@
       const formData = utils.serializeFormToObject(thisProduct.form); // Pobranie danych z formularza i przypisanie do formData
       //console.log('formData ', formData);
     
+      thisProduct.params = {};
+
       /* set variable price to equal thisProduct.data.price */
       let price = thisProduct.data.price; // Przypisanie wartości thisProduct.data.price do zmiennej price
       //console.log('Price: ', price);
@@ -239,7 +243,14 @@
           /* find active images of selected options */ 
           const activeImages = thisProduct.imageWrapper.querySelectorAll('.' + paramId + '-' + optionId); //np .ingredients-olives jak wybierzemy checkboxa Olives w NONNA ALBA'S PIZZA
 
-          if (optionSelected) {
+          if (optionSelected) { 
+            if(!thisProduct.params[paramId]){ // Sprwdzamy czy półprodukt jest wybrany
+              thisProduct.params[paramId] = { // jeżeli nie (i np. dopiero wybraliśmy) to przypisujemy do jego klucza label i option {} 
+                label: param.label,
+                options: {},
+              };
+            }
+            thisProduct.params[paramId].options[optionId] = option.label; // Dodajemy do options zaznaczona opcje i nadajemy jej wartość labelu.
             for (let activeImage of activeImages) 
               activeImage.classList.add(classNames.menuProduct.imageVisible); // Nadajemy klase "active" obrazkowi wybranego składnika = staje się widoczny
           } 
@@ -253,9 +264,13 @@
       }
       /* set the contents of thisProduct.priceElem to be the value of variable price */
 
-      /* multiply price by amount */ 
-      price *= thisProduct.amountWidget.value; // cena raz wybrana ilość w widgecie 
-      thisProduct.priceElem.innerHTML = price; // Umieszczenie price w HTML, aby zmieniała się na stronie
+      /* multiply price by amount */
+      thisProduct.priceSingle = price;
+      thisProduct.price = thisProduct.priceSingle * thisProduct.amountWidget.value;
+
+      /* set the contents of thisProduct.priceElem to be the value of variable price */
+      thisProduct.priceElem.innerHTML = thisProduct.price;
+      console.log('Skomplikowane: ', thisProduct.params);
     }
 
     initAmountWidget(){ // metoda tworząca instancje klasy AmountWidget i zapisywała ją we właściwosci produktu
@@ -266,6 +281,15 @@
       thisProduct.amountWidgetElem.addEventListener('updated', function(){ // nasłuchiwanie eventu "updated"
         thisProduct.processOrder(); // wywołanie metody
       });
+    }
+
+    addToCart(){
+      const thisProduct = this;
+
+      thisProduct.data.name = thisProduct.name;
+      thisProduct.amountWidget.value = thisProduct.amount;
+
+      app.cart.add(thisProduct);
     }
   }
 
@@ -352,6 +376,8 @@
       thisCart.dom.wrapper = element;
 
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
+      thisCart.dom.productList =  thisCart.dom.wrapper.querySelector(select.cart.productList);
+
     }
 
     initActions(){
@@ -362,6 +388,27 @@
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
       });
     }
+
+    add(menuProduct){
+      const thisCart = this;
+      console.log('Adding product', menuProduct);
+
+      /* generate HTML based on template */
+      //const generatedHTML = templates.menuProduct(thisProduct.data);
+      const generatedHTML = templates.cartProduct(menuProduct);
+      console.log(generatedHTML);
+
+      /* create element using utils.createDOMFromHTML */
+      //thisProduct.element = utils.createDOMFromHTML(generatedHTML);
+      const generatedDOM = utils.createDOMFromHTML(generatedHTML);
+
+      /* find menu container */ 
+      const cartContainer = thisCart.dom.productList;
+
+      /* add element to cart */
+      cartContainer.appendChild(generatedDOM);
+    }
+
   }
 
   const app = {
