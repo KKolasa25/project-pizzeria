@@ -360,7 +360,7 @@
     constructor(element){
       const thisCart = this;
 
-      thisCart.product = [];
+      thisCart.products = [];
 
       thisCart.getElements(element);
       thisCart.initActions();
@@ -406,8 +406,8 @@
       /* add element to cart */
       cartContainer.appendChild(generatedDOM);
 
-      thisCart.products.push(menuProduct);
-      console.log('thisCart.products: ', thisCart.products);
+      thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
+      //console.log('thisCart.products: ', thisCart.products);
     }
   }
 
@@ -423,9 +423,11 @@
       thisCartProduct.params = JSON.parse(JSON.stringify(menuProduct.params));
 
       thisCartProduct.getElements(element);
+      thisCartProduct.initAmountWidget();
 
       console.log('new CartProduct', thisCartProduct);
     }
+    
 
     getElements(element) {
       const thisCartProduct = this;
@@ -436,7 +438,20 @@
       thisCartProduct.dom.amountWidget = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.amountWidget);
       thisCartProduct.dom.price = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.price);
       thisCartProduct.dom.edit = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.edit);
-      thisCartProduct.dom.remove = thisCartProduct.dom.wrapper.querySelector(select.cartProduct.remove);
+      thisCartProduct.dom.remove =  thisCartProduct.dom.wrapper.querySelector(select.cartProduct.remove);
+    }
+
+    initAmountWidget(){ // metoda tworząca instancje klasy AmountWidget i zapisywała ją we właściwosci produktu
+      const thisCartProduct = this;
+
+      thisCartProduct.amountWidget = new AmountWidget(thisCartProduct.dom.amountWidget); // nowa instancja
+
+      thisCartProduct.dom.amountWidget.addEventListener('updated', function(){ // nasłuchiwanie eventu "updated"
+        thisCartProduct.amount = thisCartProduct.amountWidget.value;
+        thisCartProduct.price = thisCartProduct.priceSingle * thisCartProduct.amount;
+        
+        thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
+      });
     }
   }
 
