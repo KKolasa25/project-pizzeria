@@ -351,7 +351,10 @@
     announce(){ // metoda ktora tworzy instancje klasy Event 
       const thisWidget = this;
 
-      const event = new Event('updated'); // tworzenie nowego eventu 
+      const event = new CustomEvent ('updated', {
+        bubbles: true
+      }); 
+
       thisWidget.element.dispatchEvent(event); // wywołanie eventu na kontenerze naszego widgetu / Wywołuje zdarzenie w bieżącym elemencie
     }
   }
@@ -364,6 +367,8 @@
 
       thisCart.getElements(element);
       thisCart.initActions();
+
+      thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
 
       //console.log('New Cart: ', thisCart);
     }
@@ -378,6 +383,11 @@
       thisCart.dom.toggleTrigger = thisCart.dom.wrapper.querySelector(select.cart.toggleTrigger);
       thisCart.dom.productList =  thisCart.dom.wrapper.querySelector(select.cart.productList);
 
+      thisCart.renderTotalsKeys = ['totalNumber', 'totalPrice', 'subtotalPrice', 'deliveryFee'];
+
+      for(let key of thisCart.renderTotalsKeys){
+        thisCart.dom[key] = thisCart.dom.wrapper.querySelectorAll(select.cart[key]);
+      }
     }
 
     initActions(){
@@ -386,6 +396,14 @@
       thisCart.dom.toggleTrigger.addEventListener('click', function(event){
         event.preventDefault();
         thisCart.dom.wrapper.classList.toggle(classNames.cart.wrapperActive);
+      });
+
+      thisCart.dom.productList.addEventListener('updated', function(){
+        thisCart.update();
+      });
+
+      thisCart.dom.productList.addEventListener('remove', function(){
+        thisCart.remove(event.detail.cartProduct); // Odczytanie instancji thisCartProduct i przekazanie jej metodzie remove(cartProduct)
       });
     }
 
@@ -408,6 +426,39 @@
 
       thisCart.products.push(new CartProduct(menuProduct, generatedDOM));
       //console.log('thisCart.products: ', thisCart.products);
+
+      thisCart.update();
+    }
+
+    update(){
+      const thisCart = this;
+      thisCart.totalNumber = 0;
+      thisCart.subtotalPrice = 0;
+
+      for(let product of thisCart.products){
+        thisCart.subtotalPrice = thisCart.subtotalPrice + product.price;
+        thisCart.totalNumber = thisCart.totalNumber + product.amount;
+      }
+
+      thisCart.totalPrice = thisCart.subtotalPrice + thisCart.deliveryFee;
+      console.log('totalNumber: ', thisCart.totalNumber);
+      console.log('subtotalprice: ', thisCart.subtotalPrice);
+      console.log('thisCart.totalPrice: ', thisCart.totalPrice);
+
+      for(let key of thisCart.renderTotalsKeys){
+        for(let elem of thisCart.dom[key]){
+          elem.innerHTML = thisCart[key];
+        }
+      }
+    }
+
+    remove(cartProduct) {
+      const thisCart = this;
+      const index = thisCart.products.indexOf(cartProduct);
+      thisCart.products.splice(index, 1); // 1 = liczba usuwanych elementów z tablicy licząc od pierwszego elementu
+      cartProduct.dom.wrapper.remove(); // usuwanie elementu z DOMu
+      thisCart.update();
+
     }
   }
 
@@ -424,8 +475,9 @@
 
       thisCartProduct.getElements(element);
       thisCartProduct.initAmountWidget();
+      thisCartProduct.initActions();
 
-      console.log('new CartProduct', thisCartProduct);
+      //console.log('new CartProduct', thisCartProduct);
     }
     
 
@@ -453,6 +505,34 @@
         thisCartProduct.dom.price.innerHTML = thisCartProduct.price;
       });
     }
+
+    remove(){
+      const thisCartProduct = this;
+
+      const event = new CustomEvent('remove', {
+        bubbles: true,
+        detail: { // przekazujemy odwołanie do instancji dla której klikneliśmy "usuń"
+          cartProduct: thisCartProduct,
+        },
+      });
+
+      thisCartProduct.dom.wrapper.dispatchEvent(event);
+    }
+
+    initActions(){
+      const thisCartProduct = this;
+
+      thisCartProduct.dom.edit.addEventListener('click', function(event){
+        event.preventDefault();
+
+      });
+
+      thisCartProduct.dom.remove.addEventListener('click', function(event){
+        event.preventDefault();
+        thisCartProduct.remove();
+      });
+    }
+
   }
 
   const app = {
