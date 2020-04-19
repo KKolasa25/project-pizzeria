@@ -133,8 +133,7 @@
       thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
       thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
 
-      
-      //console.log('Szukane produkty:',  thisProduct);
+      //console.log('Szukane produkty:',  thisProduct.orderConfirmation);
     }
 
     initAccordion(){
@@ -179,6 +178,8 @@
       thisProduct.form.addEventListener('submit', function(event){
         event.preventDefault();
         thisProduct.processOrder();
+
+        //thisProduct.orderConfirmation.classList.add('error');
       });
       
       for(let input of thisProduct.formInputs){
@@ -375,6 +376,7 @@
       thisCart.initActions();
 
       thisCart.deliveryFee = settings.cart.defaultDeliveryFee;
+      
 
       //console.log('New Cart: ', thisCart);
     }
@@ -438,7 +440,7 @@
       };
 
       for (let product of thisCart.products){
-        const singleProduct = product.getData;
+        const singleProduct = product.getData();
 
         payload.products.push(singleProduct);
       }
