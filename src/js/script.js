@@ -179,7 +179,6 @@
       thisProduct.form.addEventListener('submit', function(event){
         event.preventDefault();
         thisProduct.processOrder();
-        
       });
       
       for(let input of thisProduct.formInputs){
@@ -192,8 +191,6 @@
         event.preventDefault();
         thisProduct.processOrder();
         thisProduct.addToCart();
-
-
       });
     }
     processOrder(){
@@ -426,7 +423,9 @@
         event.preventDefault();
         
         if (thisCart.products.length == ''){
+          const orderText = 'Add one or more product';
           thisCart.dom.productList.classList.add('error');
+          thisCart.dom.productList.innerHTML = orderText;
           return;
         } else {
           thisCart.dom.productList.classList.remove('error');
@@ -445,7 +444,6 @@
         } else {
           thisCart.dom.address.classList.remove('error');
         }
-
         thisCart.sendOrder();
       }); 
     }
