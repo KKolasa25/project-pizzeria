@@ -132,6 +132,7 @@
       thisProduct.priceElem = thisProduct.element.querySelector(select.menuProduct.priceElem);
       thisProduct.imageWrapper = thisProduct.element.querySelector(select.menuProduct.imageWrapper);
       thisProduct.amountWidgetElem = thisProduct.element.querySelector(select.menuProduct.amountWidget);
+      //console.log(select.menuProduct.clickable);
 
       //console.log('Szukane produkty:',  thisProduct.orderConfirmation);
     }
@@ -191,6 +192,8 @@
         event.preventDefault();
         thisProduct.processOrder();
         thisProduct.addToCart();
+
+
       });
     }
     processOrder(){
@@ -399,7 +402,7 @@
       thisCart.dom.form = thisCart.dom.wrapper.querySelector(select.cart.form);
       thisCart.dom.phone = thisCart.dom.wrapper.querySelector(select.cart.phone);
       thisCart.dom.address = thisCart.dom.wrapper.querySelector(select.cart.address);
-      console.log(thisCart.dom.phone);
+      //console.log(thisCart.dom.phone);
     
     }
 
@@ -421,17 +424,30 @@
 
       thisCart.dom.form.addEventListener('submit', function(){
         event.preventDefault();
+        
+        if (thisCart.products.length == ''){
+          thisCart.dom.productList.classList.add('error');
+          return;
+        } else {
+          thisCart.dom.productList.classList.remove('error');
+        }
+
+        if (thisCart.dom.phone.value == ''){ 
+          thisCart.dom.phone.classList.add('error');
+          return;
+        } else {
+          thisCart.dom.phone.classList.remove('error');
+        }
+
+        if (thisCart.dom.address.value == ''){ 
+          thisCart.dom.address.classList.add('error');
+          return;
+        } else {
+          thisCart.dom.address.classList.remove('error');
+        }
+
         thisCart.sendOrder();
-
-        //if (thisCart.dom.phone.input.value == ''){ 
-        thisCart.dom.phone.classList.add('error');
-        thisCart.dom.address.classList.add('error');
-        //}
       }); 
-
-      //thisCart.dom.phone.classList.add('error');
-      //thisCart.dom.address.classList.add('error');
-
     }
 
     sendOrder(){
