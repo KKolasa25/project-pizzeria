@@ -37,7 +37,7 @@ input, select {
 
   // CODE ADDED START
   &.error {
-    border: 2px solid $color-main;
+    border-color: $color-main;
   }
   // CODE ADDED END
 }
