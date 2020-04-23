@@ -42,10 +42,13 @@ const app = {
 
         /* TODO: get page id form href*/
         const pageId = clickedElement.getAttribute('href');
+        //console.log(pageId);
         const hrefPageId = pageId.replace('#', '');
 
         /*  TODO: activate page */
         thisApp.activatePage(hrefPageId); 
+        //console.log(hrefPageId);
+
       });
     }
   },
@@ -58,7 +61,7 @@ const app = {
     }
 
     for(let page of thisApp.pages){
-      page.classList.toggle(classNames.pages.active, page.getAttribute('href') == pageId); 
+      page.classList.toggle(classNames.pages.active, page.getAttribute('id') == pageId); 
     }
 
     window.location.hash = '#/' + pageId;

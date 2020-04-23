@@ -20,7 +20,7 @@ export class Booking {
 
     thisBooking.dom.wrapper = element;
 
-    thisBooking.dom.wrapper = utils.createDOMFromHTML(generatedHTML);
+    thisBooking.dom.wrapper.innerHTML = generatedHTML;
 
     thisBooking.dom.peopleAmount = thisBooking.dom.wrapper.querySelector(select.booking.peopleAmount);
     thisBooking.dom.hoursAmount = thisBooking.dom.wrapper.querySelector(select.booking.hoursAmount);
