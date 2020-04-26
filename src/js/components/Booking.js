@@ -105,13 +105,17 @@ export class Booking {
       console.log(bookings);
     }
 
-    //for (let reapetEvent of eventsRepeat){
-    //if(event.repeat == 'daily'){
-    // const minDate = thisBooking.datePicker.minDate;
-    //const maxDate = thisBooking.datePicker.maxDate;
-    // TUTAJ CHYBA COŚ BEDZIE // 
-    //}
-    //}
+    const minDate = thisBooking.datePicker.minDate;
+    const maxDate = thisBooking.datePicker.maxDate;
+
+    for (let reapetEvent of eventsRepeat){ // iterujemy po tablicy eventsRepeat
+      if(reapetEvent.repeat == 'daily'){ // sprawdzamy czy element w tablicy jest "daily"
+        for (let date = minDate; date <= maxDate; date = utils.addDays(date)){ 
+          thisBooking.makeBooked(reapetEvent.date, reapetEvent.hour, reapetEvent.duration, reapetEvent.table); 
+          console.log(reapetEvent);
+        }
+      }
+    }
   }
 
   makeBooked(date, hour, duration, table) {
