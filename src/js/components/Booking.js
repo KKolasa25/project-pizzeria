@@ -110,8 +110,8 @@ export class Booking {
 
     for (let reapetEvent of eventsRepeat){ // iterujemy po tablicy eventsRepeat
       if(reapetEvent.repeat == 'daily'){ // sprawdzamy czy element w tablicy jest "daily"
-        for (let date = minDate; date <= maxDate; date = utils.addDays(date)){ 
-          thisBooking.makeBooked(reapetEvent.date, reapetEvent.hour, reapetEvent.duration, reapetEvent.table); 
+        for (let dateDaily = minDate; dateDaily <= maxDate; dateDaily = utils.addDays(dateDaily, 1)){  
+          thisBooking.makeBooked(utils.dateToStr(dateDaily), reapetEvent.hour, reapetEvent.duration, reapetEvent.table); 
           console.log(reapetEvent);
         }
       }
