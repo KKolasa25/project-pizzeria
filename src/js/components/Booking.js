@@ -1,4 +1,4 @@
-import {templates, select, settings} from '../settings.js';
+import {templates, select, settings, classNames} from '../settings.js';
 import {AmountWidget} from './AmountWidget.js';
 import {DatePicker} from './DatePicker.js';
 import {HourPicker} from './HourPicker.js';
@@ -31,6 +31,8 @@ export class Booking {
     thisBooking.dom.datePicker = thisBooking.dom.wrapper.querySelector(select.widgets.datePicker.wrapper);
     thisBooking.dom.hourPicker = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.wrapper);
 
+    thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
+
 
   }
 
@@ -42,6 +44,10 @@ export class Booking {
 
     thisBooking.datePicker = new DatePicker(thisBooking.dom.datePicker);
     thisBooking.hourPicker = new HourPicker(thisBooking.dom.hourPicker);
+
+    thisBooking.dom.wrapper.addEventListener('updated',function() {
+      thisBooking.updateDOM();
+    });
   }
 
   getData(){
@@ -116,6 +122,7 @@ export class Booking {
         }
       }
     }
+    thisBooking.updateDOM();
   }
 
   makeBooked(date, hour, duration, table) {
@@ -138,4 +145,30 @@ export class Booking {
     }
     //console.log(thisBooking.booked);
   }
+
+  updateDOM(){
+    const thisBooking = this;
+    console.log('updateDOM');
+
+    thisBooking.date = thisBooking.datePicker.value;
+    thisBooking.hour = utils.hourToNumber(thisBooking.hourPicker.value);
+
+    for(let table of thisBooking.dom.tables){ // iteracje po elementmach '.floor-plan .table'
+      let numberTable = table.getAttribute(settings.booking.tableIdAttribute); // pobranie numerów stolików 
+      //console.log(numberTable); 
+
+      if (typeof thisBooking.booked[thisBooking.date] != 'undefined' && // typeof zwraca informacje o typie argumentu (w tym przypadku jest tablica, a nie undefined)
+      typeof thisBooking.booked[thisBooking.date][thisBooking.hour] != 'undefined' && // znalezione na: https://thisinterestsme.com/check-element-exists-javascript/
+      thisBooking.booked[thisBooking.date][thisBooking.hour].includes(numberTable)){// metoda includes() ustala czy dana tablica posiada szukany element, zwracając true lub false
+
+        table.classList.add(classNames.booking.tableBooked); // nadajemy klase 'booked'
+      } else {
+        table.classList.remove(classNames.booking.tableBooked); // usuwamy klase 'booked'
+      }
+      //console.log(thisBooking.booked[thisBooking.date]);
+      //console.log(thisBooking.booked[thisBooking.date][thisBooking.hour]);
+    }
+  }
 }
+
+  
