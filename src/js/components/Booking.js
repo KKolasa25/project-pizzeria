@@ -66,7 +66,7 @@ export class Booking {
       eventsCurrent: settings.db.notRepeatParam + '&' + utils.queryParams(startEndDates),
       eventsRepeat: settings.db.repeatParam + '&' + utils.queryParams(endDate),
     };
-    console.log('getData params', params);
+    //console.log('getData params', params);
 
     const urls = {
       booking: settings.db.url + '/' + settings.db.booking + '?' + params.booking,
@@ -74,7 +74,7 @@ export class Booking {
       eventsRepeat: settings.db.url + '/' + settings.db.event + '?' + params.eventsRepeat,
     };
     
-    console.log('getData urls', urls);
+    //console.log('getData urls', urls);
 
     Promise.all([ // Promise.all działa podobnie jak fetch, ale funkcja podłączona do niej za pomocą .then wykona się dopiero, kiedy wszystkie zapytania będą wykonane.
       fetch(urls.booking),
@@ -101,14 +101,14 @@ export class Booking {
     thisBooking.booked = {}; // ok
 
     for (let eventBooking of eventsCurrent) { //ok
-      console.log(eventBooking);
+      //console.log(eventBooking);
       thisBooking.makeBooked(eventBooking.date, eventBooking.hour, eventBooking.duration, eventBooking.table); //ok
     }
 
     for (let event of bookings) { //ok
       //console.log(eventBooking);
       thisBooking.makeBooked(event.date, event.hour, event.duration, event.table); //ok
-      console.log(bookings);
+      //console.log(bookings);
     }
 
     const minDate = thisBooking.datePicker.minDate;
@@ -150,17 +150,21 @@ export class Booking {
     const thisBooking = this;
     console.log('updateDOM');
 
-    thisBooking.date = thisBooking.datePicker.value;
+    thisBooking.date = thisBooking.datePicker.value; // 2020-04-27
     thisBooking.hour = utils.hourToNumber(thisBooking.hourPicker.value);
+    // console.log(thisBooking.date); 
+    // console.log('Godzina:', thisBooking.hour);
 
     for(let table of thisBooking.dom.tables){ // iteracje po elementmach '.floor-plan .table'
       let numberTable = table.getAttribute(settings.booking.tableIdAttribute); // pobranie numerów stolików 
-      //console.log(numberTable); 
 
+      numberTable = parseInt(numberTable); // parseInt konwertuje przekazany argument (tutaj tekst) na liczbę
+      //console.log(numberTable);
+ 
+    
       if (typeof thisBooking.booked[thisBooking.date] != 'undefined' && // typeof zwraca informacje o typie argumentu (w tym przypadku jest tablica, a nie undefined)
       typeof thisBooking.booked[thisBooking.date][thisBooking.hour] != 'undefined' && // znalezione na: https://thisinterestsme.com/check-element-exists-javascript/
       thisBooking.booked[thisBooking.date][thisBooking.hour].includes(numberTable)){// metoda includes() ustala czy dana tablica posiada szukany element, zwracając true lub false
-
         table.classList.add(classNames.booking.tableBooked); // nadajemy klase 'booked'
       } else {
         table.classList.remove(classNames.booking.tableBooked); // usuwamy klase 'booked'
