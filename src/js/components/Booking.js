@@ -128,22 +128,22 @@ export class Booking {
   makeBooked(date, hour, duration, table) {
     const thisBooking = this;
 
-    thisBooking.booked[date] = {};
-    //console.log(thisBooking.booked[date]);
-    
-    const bookedHour = utils.hourToNumber(hour); // bookedHour = 12.5
+    //console.log(thisBooking.booked[date]); undefined!
 
-    thisBooking.bookedHour = [];
-    //console.log(bookedHour);
+    if (typeof (thisBooking.booked[date]) == 'undefined'){ // jeżeli wartość podanego argumentu (data w obiekcie thisBooking.booked) bedzdzie undefined 
+      thisBooking.booked[date] = {}; // to stwórz nowy obikiet thisBooking.booked[date]
+    }
+    const bookedHour = utils.hourToNumber(hour); // bookedHour = 12.5 pierwsza rezerwacja
+    console.log(hour);
 
     for (let blockHour = bookedHour; blockHour < bookedHour + duration; blockHour += 0.5) { 
     // blockHour = 12.5; pętla wykona iteracje od 12.5 + 4 (8 raz 30min), po 30min każda iteracja = 16:00. (12.5 13 13.5 14 14.5 15 15.5 16)
-
-      thisBooking.booked[date][blockHour] = []; // tworzymy tablice z obkietu i tablicy bookedHour z wartościa 12.5 
-      //console.log('thisBooking.booked[date][blockHour]: ', thisBooking.booked[date][blockHour]);
+      if (typeof thisBooking.booked[date][blockHour] == 'undefined'){ // jeżeli wartość argumentu obkietu thisBooking.booked[date][blockHour] będzie undefined 
+        thisBooking.booked[date][blockHour] = []; // to tworzymy tablice z obkietu i bookedHour z wartościa początkową 12.5 
+      }
       thisBooking.booked[date][blockHour].push(table); // dodajemy na koniec tablicy po każdej iteracji argument table (numer stolika) + zwiększamy wartość o 0.5 do spełnienia warunku
+      // i wtedy stolik kończy swoją rezerwacje
     }
-    //console.log(thisBooking.booked);
   }
 
   updateDOM(){
