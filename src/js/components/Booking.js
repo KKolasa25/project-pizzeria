@@ -150,8 +150,15 @@ export class Booking {
     const thisBooking = this;
     console.log('updateDOM');
 
-    thisBooking.date = thisBooking.datePicker.value; // 2020-04-27
+    let pickDate = thisBooking.datePicker.value;
+
+    if (typeof pickDate == 'object'){ // sprawdzmy czy pickDate to object, jeżeli jest to zwracamy pickDate jako elementem z indexem 0 (pierwszy element) zamieniony na tekst
+      pickDate = utils.dateToStr(pickDate[0]);
+    }
+
+    thisBooking.date = pickDate;
     thisBooking.hour = utils.hourToNumber(thisBooking.hourPicker.value);
+    
     // console.log(thisBooking.date); 
     // console.log('Godzina:', thisBooking.hour);
 
