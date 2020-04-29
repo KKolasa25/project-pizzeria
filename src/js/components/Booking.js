@@ -23,8 +23,8 @@ export class Booking {
     thisBooking.dom.datePicker = thisBooking.dom.wrapper.querySelector(select.widgets.datePicker.wrapper);
     thisBooking.dom.hourPicker = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.wrapper);
     thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
-    thisBooking.dom.phone = thisBooking.dom.wrapper.querySelectorAll(select.booking.phone);
-    thisBooking.dom.address = thisBooking.dom.wrapper.querySelectorAll(select.booking.address);
+    thisBooking.dom.phone = thisBooking.dom.wrapper.querySelector(select.booking.phone);
+    thisBooking.dom.address = thisBooking.dom.wrapper.querySelector(select.booking.address);
     thisBooking.dom.starters = thisBooking.dom.wrapper.querySelectorAll(select.booking.starter);
   }
 
@@ -44,7 +44,6 @@ export class Booking {
       thisBooking.sendBooking();
       alert('Reservation done');
     });
-
   }
 
   getData(){
@@ -206,6 +205,14 @@ export class Booking {
       address: thisBooking.dom.address.value,
       starters: [],
     };
+
+    for (let starter of thisBooking.dom.starters) {
+      if (starter.checked == true) {
+        const starterValue = starter.value;
+        bookingPayload.starters.push(starterValue);
+        //console.log(starterValue);
+      }
+    }
 
     const options = {
       method: 'POST',
