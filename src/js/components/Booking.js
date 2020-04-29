@@ -7,7 +7,6 @@ import {utils} from '../utils.js';
 export class Booking {
   constructor(element) {
     const thisBooking = this;
-
     thisBooking.render(element);
     thisBooking.initWidgets();
     thisBooking.getData();
@@ -15,23 +14,15 @@ export class Booking {
 
   render(element){
     const thisBooking = this;
-
     const generatedHTML = templates.bookingWidget();
-
     thisBooking.dom = {};
-
     thisBooking.dom.wrapper = element;
-
     thisBooking.dom.wrapper.innerHTML = generatedHTML;
-
     thisBooking.dom.peopleAmount = thisBooking.dom.wrapper.querySelector(select.booking.peopleAmount);
     thisBooking.dom.hoursAmount = thisBooking.dom.wrapper.querySelector(select.booking.hoursAmount);
-
     thisBooking.dom.datePicker = thisBooking.dom.wrapper.querySelector(select.widgets.datePicker.wrapper);
     thisBooking.dom.hourPicker = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.wrapper);
-
     thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
-    //console.log(thisBooking.dom.tables);
     thisBooking.dom.phone = thisBooking.dom.wrapper.querySelectorAll(select.booking.phone);
     thisBooking.dom.address = thisBooking.dom.wrapper.querySelectorAll(select.booking.address);
     thisBooking.dom.starters = thisBooking.dom.wrapper.querySelectorAll(select.booking.starter);
@@ -39,10 +30,8 @@ export class Booking {
 
   initWidgets(){
     const thisBooking = this;
-
     thisBooking.peopleAmount = new AmountWidget(thisBooking.dom.peopleAmount);
     thisBooking.hoursAmount = new AmountWidget(thisBooking.dom.hoursAmount);
-
     thisBooking.datePicker = new DatePicker(thisBooking.dom.datePicker);
     thisBooking.hourPicker = new HourPicker(thisBooking.dom.hourPicker);
 
@@ -105,7 +94,6 @@ export class Booking {
   // eslint-disable-next-line no-unused-vars
   parseData(bookings, eventsCurrent, eventsRepeat){ // ok
     const thisBooking = this; // ok
-
     thisBooking.booked = {}; // ok
 
     for (let eventBooking of eventsCurrent) { //ok
@@ -194,6 +182,7 @@ export class Booking {
   
         if(!selectedTable) {
           table.classList.toggle(classNames.booking.tableBooked);
+          thisBooking.choosenTable = numberTable; 
         } else {
           // INFORMACJA NA STRONIE //
           console.log('Table is booked! Choose another table, please');
@@ -209,13 +198,13 @@ export class Booking {
 
     const bookingPayload = {
       date: thisBooking.date,
-      hour: utils.numberToHour(thisBooking.hour), // jak wstawiałem hour: thisBooking.hoursAmount.value, wyrzucało mi błąd, że funkcja hour.split(':'); w utils.js nie jest funkcja
-      table: thisBooking.tableIsBooked,
+      hour: thisBooking.hoursAmount.value, 
+      table: thisBooking.choosenTable, 
       duration: thisBooking.hoursAmount.value,
       ppl: thisBooking.peopleAmount.value,
       phone: thisBooking.dom.phone.value,
       address: thisBooking.dom.address.value,
-      starters: []
+      starters: [],
     };
 
     const options = {
