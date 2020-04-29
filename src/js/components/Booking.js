@@ -198,7 +198,7 @@ export class Booking {
 
     const bookingPayload = {
       date: thisBooking.date,
-      hour: thisBooking.hoursAmount.value, 
+      hour: utils.numberToHour(thisBooking.hour), //jak wstawiałem hour: thisBooking.hoursAmount.value, wyrzucało mi błąd, że funkcja hour.split(':'); w utils.js nie jest funkcja
       table: thisBooking.choosenTable, 
       duration: thisBooking.hoursAmount.value,
       ppl: thisBooking.peopleAmount.value,
