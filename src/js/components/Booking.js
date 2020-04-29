@@ -32,6 +32,7 @@ export class Booking {
     thisBooking.dom.hourPicker = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.wrapper);
 
     thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
+    //console.log(thisBooking.dom.tables);
 
 
   }
@@ -123,6 +124,7 @@ export class Booking {
       }
     }
     thisBooking.updateDOM();
+    thisBooking.selectTable(); // WYBÓR STOLIKA KTÓRY CHCEMY ZABOOKOWAĆ, USUNIĘCIE ZABOOKOWANEGO STOLIKA
   }
 
   makeBooked(date, hour, duration, table) {
@@ -134,7 +136,7 @@ export class Booking {
       thisBooking.booked[date] = {}; // to stwórz nowy obikiet thisBooking.booked[date]
     }
     const bookedHour = utils.hourToNumber(hour); // bookedHour = 12.5 pierwsza rezerwacja
-    console.log(hour);
+    //console.log(hour);
 
     for (let blockHour = bookedHour; blockHour < bookedHour + duration; blockHour += 0.5) { 
     // blockHour = 12.5; pętla wykona iteracje od 12.5 + 4 (8 raz 30min), po 30min każda iteracja = 16:00. (12.5 13 13.5 14 14.5 15 15.5 16)
@@ -148,7 +150,7 @@ export class Booking {
 
   updateDOM(){
     const thisBooking = this;
-    console.log('updateDOM');
+    //console.log('updateDOM');
 
     let pickDate = thisBooking.datePicker.value;
 
@@ -180,6 +182,20 @@ export class Booking {
       //console.log(thisBooking.booked[thisBooking.date][thisBooking.hour]);
     }
   }
-}
 
-  
+  selectTable(){ // WYBÓR STOLIKA KTÓRY CHCEMY ZABOOKOWAĆ, USUNIĘCIE ZABOOKOWANEGO STOLIKA
+    const thisBooking = this; 
+    const allTables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
+    console.log(allTables);
+
+    for (let singleTable of allTables){
+      const selectedTable = singleTable;
+      console.log(selectedTable);
+
+      selectedTable.addEventListener('click', function(event){
+        event.preventDefault();
+        selectedTable.classList.toggle(classNames.booking.tableBooked);
+      });
+    }
+  }
+}
