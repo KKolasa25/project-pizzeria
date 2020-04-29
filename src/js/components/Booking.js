@@ -11,7 +11,6 @@ export class Booking {
     thisBooking.render(element);
     thisBooking.initWidgets();
     thisBooking.getData();
-
   }
 
   render(element){
@@ -33,8 +32,9 @@ export class Booking {
 
     thisBooking.dom.tables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
     //console.log(thisBooking.dom.tables);
-
-
+    thisBooking.dom.phone = thisBooking.dom.wrapper.querySelectorAll(select.booking.phone);
+    thisBooking.dom.address = thisBooking.dom.wrapper.querySelectorAll(select.booking.address);
+    thisBooking.dom.starters = thisBooking.dom.wrapper.querySelectorAll(select.booking.starter);
   }
 
   initWidgets(){
@@ -49,6 +49,13 @@ export class Booking {
     thisBooking.dom.wrapper.addEventListener('updated',function() {
       thisBooking.updateDOM();
     });
+
+    thisBooking.dom.wrapper.addEventListener('submit', function(){
+      event.preventDefault();
+      thisBooking.sendBooking();
+      alert('Reservation done');
+    });
+
   }
 
   getData(){
@@ -124,7 +131,6 @@ export class Booking {
       }
     }
     thisBooking.updateDOM();
-    thisBooking.selectTable(); // WYBÓR STOLIKA KTÓRY CHCEMY ZABOOKOWAĆ, USUNIĘCIE ZABOOKOWANEGO STOLIKA
   }
 
   makeBooked(date, hour, duration, table) {
@@ -180,22 +186,52 @@ export class Booking {
       }
       //console.log(thisBooking.booked[thisBooking.date]);
       //console.log(thisBooking.booked[thisBooking.date][thisBooking.hour]);
+
+      table.addEventListener('click', function(event){
+        event.preventDefault(event);
+        table.classList.contains(classNames.booking.tableBooked);
+        let selectedTable = table.classList.contains(classNames.booking.tableBooked);
+  
+        if(!selectedTable) {
+          table.classList.toggle(classNames.booking.tableBooked);
+        } else {
+          // INFORMACJA NA STRONIE //
+          console.log('Table is booked! Choose another table, please');
+        }
+      });
     }
   }
 
-  selectTable(){ // WYBÓR STOLIKA KTÓRY CHCEMY ZABOOKOWAĆ, USUNIĘCIE ZABOOKOWANEGO STOLIKA
-    const thisBooking = this; 
-    const allTables = thisBooking.dom.wrapper.querySelectorAll(select.booking.tables);
-    console.log(allTables);
+  sendBooking(){
+    const thisBooking = this;
 
-    for (let singleTable of allTables){
-      const selectedTable = singleTable;
-      console.log(selectedTable);
+    const url = settings.db.url + '/' + settings.db.booking;
 
-      selectedTable.addEventListener('click', function(event){
-        event.preventDefault();
-        selectedTable.classList.toggle(classNames.booking.tableBooked);
+    const bookingPayload = {
+      date: thisBooking.date,
+      hour: utils.numberToHour(thisBooking.hour), // jak wstawiałem hour: thisBooking.hoursAmount.value, wyrzucało mi błąd, że funkcja hour.split(':'); w utils.js nie jest funkcja
+      table: thisBooking.tableIsBooked,
+      duration: thisBooking.hoursAmount.value,
+      ppl: thisBooking.peopleAmount.value,
+      phone: thisBooking.dom.phone.value,
+      address: thisBooking.dom.address.value,
+      starters: []
+    };
+
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bookingPayload),
+    };
+
+    fetch(url, options)
+      .then(function(response){
+        return response.json();
+      })
+      .then(function(parsedResponse){
+        console.log('parsedResponse', parsedResponse);
       });
-    }
   }
 }
