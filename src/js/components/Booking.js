@@ -41,6 +41,7 @@ export class Booking {
     for (let table of thisBooking.dom.tables) { // iteracja po stolach
       table.addEventListener('click', function () { // klik na stół
         event.preventDefault();
+
         let numberTable = table.getAttribute(settings.booking.tableIdAttribute);
         numberTable = parseInt(numberTable); 
         for (let table of thisBooking.dom.tables) { 
@@ -49,22 +50,9 @@ export class Booking {
         }
         table.classList.add(classNames.booking.tableBooked);
         thisBooking.choosenTable = numberTable;
+        
       });
     }
-
-    /*table.addEventListener('click', function(event){
-        event.preventDefault(event);
-        table.classList.contains(classNames.booking.tableBooked); // sprawdzamy czy element table posiada klase booked
-        let selectedTable = table.classList.contains(classNames.booking.tableBooked);  // 
-  
-        if(!selectedTable) { // jeżeli selectable nie ma klasy booked, dodaj jej klase booked
-          table.classList.toggle(classNames.booking.tableBooked);
-          thisBooking.choosenTable = numberTable; // choosenTable = numerek stolika (z wczesniejszej pętli)
-        } else {
-          // INFORMACJA NA STRONIE //
-          console.log('Table is booked! Choose another table, please');
-        }
-      });*/
 
     thisBooking.dom.wrapper.addEventListener('updated',function() {
       thisBooking.updateDOM();
@@ -72,9 +60,26 @@ export class Booking {
 
     thisBooking.dom.submit.addEventListener('click', function(){
       event.preventDefault();
+
+      if (typeof thisBooking.choosenTable == 'undefined'){
+        alert('Choose a table, please!');
+        return;
+      }
+
+      if (thisBooking.dom.phone.value == '' && thisBooking.dom.address.value == ''){
+        alert('Enter your phone and address, please!');
+        return;
+      }
+
+      //if(thisBooking.booked[thisBooking.date][thisBooking.hour][thisBooking.choosenTable].includes()){
+      //alert('Table is booked. Please choose another one, please!');
+      //return;
+      //}
+
       thisBooking.sendBooking();
       thisBooking.getData(); 
     });
+    
   }
 
   getData(){
