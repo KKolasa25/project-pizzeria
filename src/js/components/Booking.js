@@ -176,12 +176,12 @@ export class Booking {
 
       table.addEventListener('click', function(event){
         event.preventDefault(event);
-        table.classList.contains(classNames.booking.tableBooked);
-        let selectedTable = table.classList.contains(classNames.booking.tableBooked);
+        table.classList.contains(classNames.booking.tableBooked); // sprawdzamy czy element table posiada klase booked
+        let selectedTable = table.classList.contains(classNames.booking.tableBooked);  // 
   
-        if(!selectedTable) {
+        if(!selectedTable) { // jeżeli selectable nie ma klasy booked, dodaj jej klase booked
           table.classList.toggle(classNames.booking.tableBooked);
-          thisBooking.choosenTable = numberTable; 
+          thisBooking.choosenTable = numberTable; // choosenTable = numerek stolika (z wczesniejszej pętli)
         } else {
           // INFORMACJA NA STRONIE //
           console.log('Table is booked! Choose another table, please');
@@ -207,7 +207,7 @@ export class Booking {
     };
 
     for (let starter of thisBooking.dom.starters) {
-      if (starter.checked == true) {
+      if (starter.checked == true) { // sprawdzamy czy checkbox jest zaznaczony, jeżeli tak to:
         const starterValue = starter.value;
         bookingPayload.starters.push(starterValue);
         //console.log(starterValue);
