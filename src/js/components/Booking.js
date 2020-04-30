@@ -26,6 +26,7 @@ export class Booking {
     thisBooking.dom.phone = thisBooking.dom.wrapper.querySelector(select.booking.phone);
     thisBooking.dom.address = thisBooking.dom.wrapper.querySelector(select.booking.address);
     thisBooking.dom.starters = thisBooking.dom.wrapper.querySelectorAll(select.booking.starter);
+    thisBooking.dom.submit = thisBooking.dom.wrapper.querySelector(select.booking.submitTable);
   }
 
   initWidgets(){
@@ -35,14 +36,44 @@ export class Booking {
     thisBooking.datePicker = new DatePicker(thisBooking.dom.datePicker);
     thisBooking.hourPicker = new HourPicker(thisBooking.dom.hourPicker);
 
+    
+    // nowe // 
+    for (let table of thisBooking.dom.tables) { // iteracja po stolach
+      table.addEventListener('click', function () { // klik na stół
+        event.preventDefault();
+        let numberTable = table.getAttribute(settings.booking.tableIdAttribute);
+        numberTable = parseInt(numberTable); 
+        for (let table of thisBooking.dom.tables) { 
+          table.classList.contains(classNames.booking.tableBooked); //sprawdzamy czy element posiada klase booked
+          table.classList.remove(classNames.booking.tableBooked); // usuniecie klasy booked ze stolów 
+        }
+        table.classList.add(classNames.booking.tableBooked);
+        thisBooking.choosenTable = numberTable;
+      });
+    }
+
+    /*table.addEventListener('click', function(event){
+        event.preventDefault(event);
+        table.classList.contains(classNames.booking.tableBooked); // sprawdzamy czy element table posiada klase booked
+        let selectedTable = table.classList.contains(classNames.booking.tableBooked);  // 
+  
+        if(!selectedTable) { // jeżeli selectable nie ma klasy booked, dodaj jej klase booked
+          table.classList.toggle(classNames.booking.tableBooked);
+          thisBooking.choosenTable = numberTable; // choosenTable = numerek stolika (z wczesniejszej pętli)
+        } else {
+          // INFORMACJA NA STRONIE //
+          console.log('Table is booked! Choose another table, please');
+        }
+      });*/
+
     thisBooking.dom.wrapper.addEventListener('updated',function() {
       thisBooking.updateDOM();
     });
 
-    thisBooking.dom.wrapper.addEventListener('submit', function(){
+    thisBooking.dom.submit.addEventListener('click', function(){
       event.preventDefault();
       thisBooking.sendBooking();
-      alert('Reservation done');
+      thisBooking.getData(); 
     });
   }
 
@@ -136,15 +167,15 @@ export class Booking {
       if (typeof thisBooking.booked[date][blockHour] == 'undefined'){ // jeżeli wartość argumentu obkietu thisBooking.booked[date][blockHour] będzie undefined 
         thisBooking.booked[date][blockHour] = []; // to tworzymy tablice z obkietu i bookedHour z wartościa początkową 12.5 
       }
+      // if (thisBooking.booked[date][blockHour].indexOf(table) == -1) {
       thisBooking.booked[date][blockHour].push(table); // dodajemy na koniec tablicy po każdej iteracji argument table (numer stolika) + zwiększamy wartość o 0.5 do spełnienia warunku
       // i wtedy stolik kończy swoją rezerwacje
+      //}
     }
   }
 
   updateDOM(){
     const thisBooking = this;
-    //console.log('updateDOM');
-
     let pickDate = thisBooking.datePicker.value;
 
     if (typeof pickDate == 'object'){ // sprawdzmy czy pickDate to object, jeżeli jest to zwracamy pickDate jako elementem z indexem 0 (pierwszy element) zamieniony na tekst
@@ -159,7 +190,6 @@ export class Booking {
 
     for(let table of thisBooking.dom.tables){ // iteracje po elementmach '.floor-plan .table'
       let numberTable = table.getAttribute(settings.booking.tableIdAttribute); // pobranie numerów stolików 
-
       numberTable = parseInt(numberTable); // parseInt konwertuje przekazany argument (tutaj tekst) na liczbę
       //console.log(numberTable);
  
@@ -174,19 +204,6 @@ export class Booking {
       //console.log(thisBooking.booked[thisBooking.date]);
       //console.log(thisBooking.booked[thisBooking.date][thisBooking.hour]);
 
-      table.addEventListener('click', function(event){
-        event.preventDefault(event);
-        table.classList.contains(classNames.booking.tableBooked); // sprawdzamy czy element table posiada klase booked
-        let selectedTable = table.classList.contains(classNames.booking.tableBooked);  // 
-  
-        if(!selectedTable) { // jeżeli selectable nie ma klasy booked, dodaj jej klase booked
-          table.classList.toggle(classNames.booking.tableBooked);
-          thisBooking.choosenTable = numberTable; // choosenTable = numerek stolika (z wczesniejszej pętli)
-        } else {
-          // INFORMACJA NA STRONIE //
-          console.log('Table is booked! Choose another table, please');
-        }
-      });
     }
   }
 
@@ -228,6 +245,7 @@ export class Booking {
       })
       .then(function(parsedResponse){
         console.log('parsedResponse', parsedResponse);
+        alert('DONE'); 
       });
   }
 }

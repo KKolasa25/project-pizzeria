@@ -66,6 +66,7 @@ export const select = {
     phone: '[name="phone"]',
     address: '[name="address"]',
     starter: '[name="starter"]',
+    submitTable: '.booking-form [type="submit"]',
   },
   nav: {
     links: '.main-nav a',
@@ -83,6 +84,7 @@ export const classNames = {
   booking: {
     loading: 'loading',
     tableBooked: 'booked',
+    tableSelected: 'selected',
   },
   nav: {
     active: 'active',
