@@ -36,10 +36,8 @@ export class Booking {
     thisBooking.datePicker = new DatePicker(thisBooking.dom.datePicker);
     thisBooking.hourPicker = new HourPicker(thisBooking.dom.hourPicker);
 
-    
-    // nowe // 
-    for (let table of thisBooking.dom.tables) { // iteracja po stolach
-      table.addEventListener('click', function () { // klik na stół
+    for (let table of thisBooking.dom.tables) { 
+      table.addEventListener('click', function () {
         event.preventDefault();
 
         let numberTable = table.getAttribute(settings.booking.tableIdAttribute);
@@ -51,12 +49,9 @@ export class Booking {
           table.classList.add(classNames.booking.tableSelected);
         }
         for (let table of thisBooking.dom.tables) { 
-          //table.classList.contains(classNames.booking.tableBooked); //sprawdzamy czy element posiada klase booked
-          //table.classList.remove(classNames.booking.tableBooked); // usuniecie klasy booked ze stolów 
           table.classList.remove(classNames.booking.tableSelected);
         }
         table.classList.add(classNames.booking.tableSelected);
-        //table.classList.add(classNames.booking.tableSelected);
         thisBooking.choosenTable = numberTable;
         console.log(table);
       });
@@ -69,7 +64,7 @@ export class Booking {
     thisBooking.dom.submit.addEventListener('click', function(){
       event.preventDefault();
 
-      if (typeof thisBooking.choosenTable == 'undefined'){
+      if (!thisBooking.choosenTable){
         alert('Choose a table, please!');
         return;
       }
@@ -80,7 +75,6 @@ export class Booking {
       }
 
       thisBooking.sendBooking();
-      thisBooking.getData(); 
     });
     
   }
@@ -164,7 +158,7 @@ export class Booking {
 
     //console.log(thisBooking.booked[date]); undefined!
 
-    if (typeof (thisBooking.booked[date]) == 'undefined'){ // jeżeli wartość podanego argumentu (data w obiekcie thisBooking.booked) bedzdzie undefined 
+    if (!thisBooking.booked[date]){ // jeżeli wartość podanego argumentu (data w obiekcie thisBooking.booked) bedzdzie undefined 
       thisBooking.booked[date] = {}; // to stwórz nowy obikiet thisBooking.booked[date]
     }
     const bookedHour = utils.hourToNumber(hour); // bookedHour = 12.5 pierwsza rezerwacja
@@ -172,7 +166,7 @@ export class Booking {
 
     for (let blockHour = bookedHour; blockHour < bookedHour + duration; blockHour += 0.5) { 
     // blockHour = 12.5; pętla wykona iteracje od 12.5 + 4 (8 raz 30min), po 30min każda iteracja = 16:00. (12.5 13 13.5 14 14.5 15 15.5 16)
-      if (typeof thisBooking.booked[date][blockHour] == 'undefined'){ // jeżeli wartość argumentu obkietu thisBooking.booked[date][blockHour] będzie undefined 
+      if (!thisBooking.booked[date][blockHour]){ // jeżeli wartość argumentu obkietu thisBooking.booked[date][blockHour] będzie undefined 
         thisBooking.booked[date][blockHour] = []; // to tworzymy tablice z obkietu i bookedHour z wartościa początkową 12.5 
       }
       // if (thisBooking.booked[date][blockHour].indexOf(table) == -1) {
@@ -184,36 +178,26 @@ export class Booking {
 
   updateDOM(){
     const thisBooking = this;
-    //let pickDate = thisBooking.datePicker.value;
 
-    if (typeof thisBooking.date == 'object'){ // sprawdzmy .date to object, jeżeli jest to zwracamy  jako elementem z indexem 0 (pierwszy element) 
-      thisBooking.date = thisBooking.date[0];
-    }
-    console.log('thisBooking.date[0]', thisBooking.date);
     thisBooking.date = thisBooking.datePicker.value;
     console.log('Booking.date:', thisBooking.date);
     thisBooking.hour = utils.hourToNumber(thisBooking.hourPicker.value);
     
-    // console.log(thisBooking.date); 
-    // console.log('Godzina:', thisBooking.hour);
+    thisBooking.choosenTable = null;
 
     for(let table of thisBooking.dom.tables){ // iteracje po elementmach '.floor-plan .table'
       let numberTable = table.getAttribute(settings.booking.tableIdAttribute); // pobranie numerów stolików 
       numberTable = parseInt(numberTable); // parseInt konwertuje przekazany argument (tutaj tekst) na liczbę
-      //console.log(numberTable);
- 
     
-      if (typeof thisBooking.booked[thisBooking.date] != 'undefined' && // typeof zwraca informacje o typie argumentu (w tym przypadku jest tablica, a nie undefined)
-      typeof thisBooking.booked[thisBooking.date][thisBooking.hour] != 'undefined' && // znalezione na: https://thisinterestsme.com/check-element-exists-javascript/
+      table.classList.remove(classNames.booking.tableSelected);
+    
+      if (thisBooking.booked[thisBooking.date] && 
+      thisBooking.booked[thisBooking.date][thisBooking.hour] && // znalezione na: https://thisinterestsme.com/check-element-exists-javascript/
       thisBooking.booked[thisBooking.date][thisBooking.hour].includes(numberTable)){// metoda includes() ustala czy dana tablica posiada szukany element, zwracając true lub false
         table.classList.add(classNames.booking.tableBooked); // nadajemy klase 'booked'
       } else {
         table.classList.remove(classNames.booking.tableBooked); // usuwamy klase 'booked'
-        table.classList.remove(classNames.booking.tableSelected);
       }
-      //console.log(thisBooking.booked[thisBooking.date]);
-      //console.log(thisBooking.booked[thisBooking.date][thisBooking.hour]);
-
     }
   }
 
@@ -237,7 +221,6 @@ export class Booking {
       if (starter.checked == true) { // sprawdzamy czy checkbox jest zaznaczony, jeżeli tak to:
         const starterValue = starter.value;
         bookingPayload.starters.push(starterValue);
-        //console.log(starterValue);
       }
     }
 
@@ -255,9 +238,11 @@ export class Booking {
       })
       .then(function(parsedResponse){
         console.log('parsedResponse', parsedResponse);
-        thisBooking.makeBooked(bookingPayload.date, bookingPayload.hour, bookingPayload.table, bookingPayload.duration);
+        thisBooking.makeBooked(bookingPayload.date, bookingPayload.hour, bookingPayload.duration, bookingPayload.table);
+        thisBooking.updateDOM();
+        //thisBooking.getData();
         alert('DONE'); 
       });
-    console.log(bookingPayload.date, bookingPayload.hour, bookingPayload.table, bookingPayload.duration);
+    console.log(bookingPayload.date, bookingPayload.hour, bookingPayload.duration, bookingPayload.table);
   }
 }
