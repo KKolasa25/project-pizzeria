@@ -51,7 +51,7 @@ export class Booking {
           table.classList.add(classNames.booking.tableSelected);
         }
         for (let table of thisBooking.dom.tables) { 
-          table.classList.contains(classNames.booking.tableBooked); //sprawdzamy czy element posiada klase booked
+          //table.classList.contains(classNames.booking.tableBooked); //sprawdzamy czy element posiada klase booked
           //table.classList.remove(classNames.booking.tableBooked); // usuniecie klasy booked ze stolów 
           table.classList.remove(classNames.booking.tableSelected);
         }
@@ -184,13 +184,14 @@ export class Booking {
 
   updateDOM(){
     const thisBooking = this;
-    let pickDate = thisBooking.datePicker.value;
+    //let pickDate = thisBooking.datePicker.value;
 
-    if (typeof pickDate == 'object'){ // sprawdzmy czy pickDate to object, jeżeli jest to zwracamy pickDate jako elementem z indexem 0 (pierwszy element) zamieniony na tekst
-      pickDate = utils.dateToStr(pickDate[0]);
+    if (typeof thisBooking.date == 'object'){ // sprawdzmy .date to object, jeżeli jest to zwracamy  jako elementem z indexem 0 (pierwszy element) 
+      thisBooking.date = thisBooking.date[0];
     }
-
-    thisBooking.date = pickDate;
+    console.log('thisBooking.date[0]', thisBooking.date);
+    thisBooking.date = thisBooking.datePicker.value;
+    console.log('Booking.date:', thisBooking.date);
     thisBooking.hour = utils.hourToNumber(thisBooking.hourPicker.value);
     
     // console.log(thisBooking.date); 
@@ -254,7 +255,9 @@ export class Booking {
       })
       .then(function(parsedResponse){
         console.log('parsedResponse', parsedResponse);
+        thisBooking.makeBooked(bookingPayload.date, bookingPayload.hour, bookingPayload.table, bookingPayload.duration);
         alert('DONE'); 
       });
+    console.log(bookingPayload.date, bookingPayload.hour, bookingPayload.table, bookingPayload.duration);
   }
 }

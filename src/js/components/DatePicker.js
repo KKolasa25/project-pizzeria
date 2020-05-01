@@ -34,8 +34,11 @@ export class DatePicker extends BaseWidget {
           return (date.getDay() === 1); // Data początkowa nie wyświetlała się na stronie, ponieważ w poniedziałki restauracja jest nieczynna i nie może ona pobrać daty z thisWidget.value
         }  // Teraz jest ustawione tak, aby to we wtorek była zamknięta i data domyślna (dzisiejsza) się wyświela - czyli mozna w ten dzień rezerwować stoliki :)
       ],
-      onChange: function(dateStr){ //onChange gets triggered when the user selects a date, or changes the time on a selected date
+      onChange: function(selectedDates, dateStr){ //onChange gets triggered when the user selects a date, or changes the time on a selected date
         thisWidget.value = dateStr;
+        console.log('selectedDates:', selectedDates);
+        console.log('thisWidget.value:', thisWidget.value);
+
       }
     });
   }
