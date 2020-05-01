@@ -44,13 +44,21 @@ export class Booking {
 
         let numberTable = table.getAttribute(settings.booking.tableIdAttribute);
         numberTable = parseInt(numberTable); 
+        if (table.classList.contains(classNames.booking.tableBooked)){
+          alert('This table is booked. Choose another table, please.');
+          return;
+        } else {
+          table.classList.add(classNames.booking.tableSelected);
+        }
         for (let table of thisBooking.dom.tables) { 
           table.classList.contains(classNames.booking.tableBooked); //sprawdzamy czy element posiada klase booked
-          table.classList.remove(classNames.booking.tableBooked); // usuniecie klasy booked ze stolów 
+          //table.classList.remove(classNames.booking.tableBooked); // usuniecie klasy booked ze stolów 
+          table.classList.remove(classNames.booking.tableSelected);
         }
-        table.classList.add(classNames.booking.tableBooked);
+        table.classList.add(classNames.booking.tableSelected);
+        //table.classList.add(classNames.booking.tableSelected);
         thisBooking.choosenTable = numberTable;
-        
+        console.log(table);
       });
     }
 
@@ -70,11 +78,6 @@ export class Booking {
         alert('Enter your phone and address, please!');
         return;
       }
-
-      //if(thisBooking.booked[thisBooking.date][thisBooking.hour][thisBooking.choosenTable].includes()){
-      //alert('Table is booked. Please choose another one, please!');
-      //return;
-      //}
 
       thisBooking.sendBooking();
       thisBooking.getData(); 
@@ -205,6 +208,7 @@ export class Booking {
         table.classList.add(classNames.booking.tableBooked); // nadajemy klase 'booked'
       } else {
         table.classList.remove(classNames.booking.tableBooked); // usuwamy klase 'booked'
+        table.classList.remove(classNames.booking.tableSelected);
       }
       //console.log(thisBooking.booked[thisBooking.date]);
       //console.log(thisBooking.booked[thisBooking.date][thisBooking.hour]);
