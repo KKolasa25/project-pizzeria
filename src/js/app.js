@@ -22,6 +22,7 @@ const app = {
 
     thisApp.pages = Array.from(document.querySelector(select.containerOf.pages).children);
     thisApp.navLinks = Array.from(document.querySelectorAll(select.nav.links));
+    thisApp.boxLinks = Array.from(document.querySelectorAll('.navbar-box a'));
 
     let pagesMatchingHash = [];
 
@@ -51,6 +52,17 @@ const app = {
 
       });
     }
+
+    for (let box of thisApp.boxLinks){
+      box.addEventListener('click', function(event){
+        const clickedElement = this;
+        event.preventDefault();
+
+        const boxId = clickedElement.getAttribute('href');
+        const hrefBox = boxId.replace('#', '');
+        thisApp.activatePage(hrefBox);
+      });
+    }
   },
 
   activatePage: function(pageId){
@@ -65,6 +77,7 @@ const app = {
     }
 
     window.location.hash = '#/' + pageId;
+
   },
 
   initBooking: function(){

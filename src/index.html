@@ -1,16 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Pizzeria</title>
-  <link href="https://fonts.googleapis.com/css?family=Lato:400,300i,700%7COswald:300,500,700&amp;subset=latin-ext" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Lato:400,300i,700%7COswald:300,500,700&amp;subset=latin-ext"
+    rel="stylesheet">
   <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="vendor/range-slider.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
   <header class="header">
@@ -21,6 +26,7 @@
           <h2 class="logo__subtitle">the best homemade Italian food</h2>
         </div>
         <div class="main-nav">
+          <a href="#homepage">Homepage</a>
           <a href="#order">Order</a>
           <a href="#booking">Booking</a>
         </div>
@@ -62,6 +68,123 @@
   </header>
 
   <div id="pages">
+    <section id="homepage">
+      <div class="homepage-wrapper container">
+        <div class="navbar-homepage-wrapper">
+          <div class="navbar-box">
+            <a href="#order">
+              <h2 class="title">ORDER ONLINE</h2>
+              <p>Delicious food delivered to your door</p>
+            </a>
+          </div>
+          <div class="navbar-box">
+            <a href="#booking">
+              <h2 class="title">BOOK A TABLE</h2>
+              <p>Visit our place!</p>
+            </a>
+          </div>
+          <div class="navbar-box">
+            <h2 class="title">OPENING HOURS:</h2>
+            <p class="time">TUE - SUN, 12PM - 12AM</p>
+          </div>
+        </div>
+        <div class="carousel">
+          <div class="carousel-wrapper">
+            <div class="carousel-image">
+              <img src='./images/assets/pizza-3.jpg' alt="pizza_pic">
+            </div>
+            <div class="bootstrap-carousel">
+              <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel" data-interval="3000">
+                <ol class="carousel-indicators">
+                  <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+                  <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+                  <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+                </ol>
+                <div class="carousel-inner">
+                  <div class="carousel-item active">
+                    <h3 class="opinion-header">AMAZING SERVICE!</h3>
+                    <p class="opinion">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent lobortis
+                      aliquam ultrices.
+                      In nec augue lacus. Sed vestibulum elementum nunc. Curabitur porta diam eu sagittis eleifend.</p>
+                    <p class="author">Margaret Osborne</p>
+                  </div>
+                  <div class="carousel-item">
+                    <h3 class="opinion-header">AMAZING SERVICE!</h3>
+                    <p class="opinion">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent lobortis
+                      aliquam ultrices.
+                      In nec augue lacus. Sed vestibulum elementum nunc. Curabitur porta diam eu sagittis eleifend.</p>
+                    <p class="author">Margaret Osborne</p>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <h3 class="opinion-header">AMAZING SERVICE!</h3>
+                  <p class="opinion">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent lobortis aliquam
+                    ultrices.
+                    In nec augue lacus. Sed vestibulum elementum nunc. Curabitur porta diam eu sagittis eleifend.</p>
+                  <p class="author">Margaret Osborne</p>
+                </div>
+                <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="sr-only">Next</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="gallery">
+          <div class="gallery-wrapper">
+            <div class="gallery-image">
+              <img src='./images/assets/pizza-4.jpg' alt="pizza">
+              <div class="icon">
+                <i class="fas fa-heart fa-lg"></i>
+                <i class="fas fa-share-alt fa-lg"></i>
+              </div>
+            </div>
+            <div class="gallery-image">
+              <img src='./images/assets/pizza-5.jpg' alt="pizza">
+              <div class="icon">
+                <i class="fas fa-heart fa-lg"></i>
+                <i class="fas fa-share-alt fa-lg"></i>
+              </div>
+            </div>
+            <div class="gallery-image">
+              <img src='./images/assets/pizza-6.jpg' alt="pizza">
+              <div class="icon">
+                <i class="fas fa-heart fa-lg"></i>
+                <i class="fas fa-share-alt fa-lg"></i>
+              </div>
+            </div>
+            <div class="gallery-image">
+              <img src='./images/assets/pizza-7.jpg' alt="pizza">
+              <div class="icon">
+                <i class="fas fa-heart fa-lg"></i>
+                <i class="fas fa-share-alt fa-lg"></i>
+              </div>
+            </div>
+            <div class="gallery-image">
+              <img src='./images/assets/pizza-8.jpg' alt="pizza">
+              <div class="icon">
+                <i class="fas fa-heart fa-lg"></i>
+                <i class="fas fa-share-alt fa-lg"></i>
+              </div>
+            </div>
+            <div class="gallery-image">
+              <img src='./images/assets/pizza-9.jpg' alt="pizza">
+              <div class="icon">
+                <i class="fas fa-heart fa-lg"></i>
+                <i class="fas fa-share-alt fa-lg"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+        <a href="#" id="instagram">View more on Instagram</a>
+      </div>
+    </section>
     <section id="order">
       <div id="product-list" class="product-list container"></div>
     </section>
@@ -69,7 +192,6 @@
       <div class="booking-wrapper container"></div>
     </section>
   </div>
-
   <script id="template-booking-widget" type="text/x-handlebars-template">
     <div class="booking-widget">
       <h2 class="page__title no-spacing">Book a table</h2>
@@ -246,6 +368,16 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script src="vendor/range-slider.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
   <script src="js/app.js" type="module"></script>
 </body>
+
 </html>
