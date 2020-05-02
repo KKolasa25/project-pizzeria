@@ -84,7 +84,7 @@
 .carousel-image {
   width: 200px;
   height: 200px;
-  flex: 0 0 33%;
+  flex: 0 0 33.33%;
   margin: 3px;
   margin-top: 0px;
 }
@@ -118,6 +118,8 @@ h3 {
   padding-top: 30px;
   padding-left: 20px;
   margin: 0;
+  //cursor: default;
+  //pointer-events: none;
 
   li {
     width: 10px;
@@ -127,6 +129,10 @@ h3 {
     margin-right: 8px;
     margin-left: 8px;
   }
+}
+
+.carousel-control-prev, .carousel-control-next {
+  display: none;
 }
 
 /* GALLERY */ 
@@ -141,9 +147,8 @@ h3 {
 .gallery-image {
   position: relative;
   height: 200px;
-  flex: 0 0 31.33%;
-  object-fit: cover;
-  margin: 4px;
+  width: calc((100% / 3) - 6px);
+  margin: 6px 0 6px 0;
 
   img {
     width: 100%;
