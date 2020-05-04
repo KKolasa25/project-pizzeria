@@ -257,9 +257,9 @@ export class Booking {
     const colors = [];
     //console.log('colors:', colors);
 
-    thisBooking.dom.rangeSlider = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.rangeSlider);
+    const rangeSlider  = thisBooking.dom.wrapper.querySelector(select.widgets.hourPicker.rangeSlider);
     //console.log('thisBooking.dom.rangeSlider:',thisBooking.dom.rangeSlider);
-    const rangeSlider = thisBooking.dom.rangeSlider;
+    //const rangeSlider = thisBooking.dom.rangeSlider;
 
     for (let bookedTime in bookedRange) {
       
