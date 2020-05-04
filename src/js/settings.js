@@ -36,9 +36,12 @@ export const select = {
       input: `input[name="date"]`,
     },
     hourPicker: {
+      rangeSlider: '.rangeSlider__horizontal',
       wrapper: '.hour-picker',
       input: 'input[type="range"]',
       output: '.output',
+      rangeSliderFill: '.rangeSlider__fill__horizontal',
+
     },
   },
   cart: {
